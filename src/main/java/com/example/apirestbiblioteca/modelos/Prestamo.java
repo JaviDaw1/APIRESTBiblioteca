@@ -21,7 +21,7 @@ public class Prestamo {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "usuario_id", nullable = false)
-    private com.example.apirestbiblioteca.modelos.Usuario usuario;
+    private Usuario usuario;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -90,8 +90,8 @@ public class Prestamo {
     public String toString() {
         return "Prestamo{" +
                 "id=" + id +
-                ", usuario=" + usuario +
-                ", ejemplar=" + ejemplar +
+                ", usuario=" + usuario.getId() +
+                ", ejemplar=" + ejemplar.getId() +
                 ", fechaInicio=" + fechaInicio +
                 ", fechaDevolucion=" + fechaDevolucion +
                 '}';

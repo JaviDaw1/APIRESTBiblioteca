@@ -1,5 +1,7 @@
 package com.example.apirestbiblioteca.modelos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -20,9 +22,10 @@ public class Ejemplar {
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "isbn", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Libro isbn;
 
     @ColumnDefault("'Disponible'")
@@ -31,7 +34,8 @@ public class Ejemplar {
     private String estado;
 
     @OneToMany(mappedBy = "ejemplar")
-    private Set<com.example.apirestbiblioteca.modelos.Prestamo> prestamos = new LinkedHashSet<>();
+    @JsonIgnore // Ignora esta propiedad al serializar
+    private Set<Prestamo> prestamos = new LinkedHashSet<>();
 
     public Ejemplar(Integer id, Libro isbn, String estado, Set<Prestamo> prestamos) {
         this.id = id;
@@ -78,7 +82,7 @@ public class Ejemplar {
     public String toString() {
         return "Ejemplar{" +
                 "id=" + id +
-                ", isbn=" + isbn +
+                ", isbn=" + isbn.getIsbn() +
                 ", estado='" + estado + '\'' +
                 ", prestamos=" + prestamos +
                 '}';

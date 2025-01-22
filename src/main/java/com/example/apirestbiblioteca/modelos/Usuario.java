@@ -1,5 +1,6 @@
 package com.example.apirestbiblioteca.modelos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -47,6 +48,7 @@ public class Usuario {
     private LocalDate penalizacionHasta;
 
     @OneToMany(mappedBy = "usuario")
+    @JsonIgnore // Ignora esta propiedad al serializar
     private Set<Prestamo> prestamos = new LinkedHashSet<>();
 
     public Usuario(Integer id, String dni, String nombre, String email, String password, String tipo, LocalDate penalizacionHasta, Set<Prestamo> prestamos) {
