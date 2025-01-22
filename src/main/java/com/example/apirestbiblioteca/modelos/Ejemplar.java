@@ -33,17 +33,6 @@ public class Ejemplar {
     @Column(name = "estado")
     private String estado;
 
-    @OneToMany(mappedBy = "ejemplar")
-    @JsonIgnore // Ignora esta propiedad al serializar
-    private Set<Prestamo> prestamos = new LinkedHashSet<>();
-
-    public Ejemplar(Integer id, Libro isbn, String estado, Set<Prestamo> prestamos) {
-        this.id = id;
-        this.isbn = isbn;
-        this.estado = estado;
-        this.prestamos = prestamos;
-    }
-
     public Ejemplar() {}
 
     public Integer getId() {
@@ -58,10 +47,6 @@ public class Ejemplar {
         return estado;
     }
 
-    public Set<Prestamo> getPrestamos() {
-        return prestamos;
-    }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -72,19 +57,5 @@ public class Ejemplar {
 
     public void setEstado(String estado) {
         this.estado = estado;
-    }
-
-    public void setPrestamos(Set<Prestamo> prestamos) {
-        this.prestamos = prestamos;
-    }
-
-    @Override
-    public String toString() {
-        return "Ejemplar{" +
-                "id=" + id +
-                ", isbn=" + isbn.getIsbn() +
-                ", estado='" + estado + '\'' +
-                ", prestamos=" + prestamos +
-                '}';
     }
 }

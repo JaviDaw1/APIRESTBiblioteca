@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/libros")
-
 public class LibrosController {
     LibrosRepository librosRepository;
 
@@ -98,5 +97,3 @@ public class LibrosController {
         return ResponseEntity.ok().body(mensaje);
     }
 }
-
-

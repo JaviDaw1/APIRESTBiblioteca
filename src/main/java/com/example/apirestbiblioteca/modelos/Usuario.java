@@ -47,21 +47,6 @@ public class Usuario {
     @Column(name = "penalizacionHasta")
     private LocalDate penalizacionHasta;
 
-    @OneToMany(mappedBy = "usuario")
-    @JsonIgnore // Ignora esta propiedad al serializar
-    private Set<Prestamo> prestamos = new LinkedHashSet<>();
-
-    public Usuario(Integer id, String dni, String nombre, String email, String password, String tipo, LocalDate penalizacionHasta, Set<Prestamo> prestamos) {
-        this.id = id;
-        this.dni = dni;
-        this.nombre = nombre;
-        this.email = email;
-        this.password = password;
-        this.tipo = tipo;
-        this.penalizacionHasta = penalizacionHasta;
-        this.prestamos = prestamos;
-    }
-
     public Usuario() {}
 
     public Integer getId() {
@@ -92,10 +77,6 @@ public class Usuario {
         return penalizacionHasta;
     }
 
-    public Set<Prestamo> getPrestamos() {
-        return prestamos;
-    }
-
     public void setId(Integer id) {
         this.id = id;
     }
@@ -122,23 +103,5 @@ public class Usuario {
 
     public void setPenalizacionHasta(LocalDate penalizacionHasta) {
         this.penalizacionHasta = penalizacionHasta;
-    }
-
-    public void setPrestamos(Set<Prestamo> prestamos) {
-        this.prestamos = prestamos;
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", dni='" + dni + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", tipo='" + tipo + '\'' +
-                ", penalizacionHasta=" + penalizacionHasta +
-                ", prestamos=" + prestamos +
-                '}';
     }
 }

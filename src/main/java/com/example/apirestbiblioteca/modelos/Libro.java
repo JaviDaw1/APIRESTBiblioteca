@@ -25,12 +25,6 @@ public class Libro {
     @Column(name = "autor", nullable = false, length = 100)
     private String autor;
 
-    public Libro(String isbn, String titulo, String autor) {
-        this.isbn = isbn;
-        this.titulo = titulo;
-        this.autor = autor;
-    }
-
     public Libro() {
 
     }
@@ -57,15 +51,6 @@ public class Libro {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
-    }
-
-    @Override
-    public String toString() {
-        return "Libro{" +
-                "isbn='" + isbn + '\'' +
-                ", titulo='" + titulo + '\'' +
-                ", autor='" + autor + '\'' +
-                '}';
     }
 }
 

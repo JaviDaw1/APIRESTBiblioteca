@@ -14,7 +14,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ejemplares")
-
 public class EjemplarController {
     private EjemplarRepository ejemplarRepository;
 
@@ -35,11 +34,15 @@ public class EjemplarController {
     }
 
     //GET BY ISBN --> SELECT BY ISBN
-    @GetMapping("/{isbn}")
-    @Cacheable
-    public ResponseEntity<Ejemplar> getEjemplarJson(@PathVariable String isbn) {
-        Ejemplar l = this.ejemplarRepository.findById(isbn).get();
-        return ResponseEntity.ok(l);
+    @GetMapping("/libro/{isbn}")
+    public ResponseEntity<List<Ejemplar>> getEjemplaresByLibroIsbn(@PathVariable String isbn) {
+        List<Ejemplar> ejemplares = this.ejemplarRepository.findByIsbn_Isbn(isbn);
+
+        if (ejemplares.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(ejemplares);
     }
 
     //POST --> INSERT
@@ -48,33 +51,6 @@ public class EjemplarController {
         System.out.println("Entra aqui");
         Ejemplar ejemplarPersistido = this.ejemplarRepository.save(ejemplar);
         return ResponseEntity.ok().body(ejemplarPersistido);
-    }
-
-    //POST con Form normal, se trabajará con JSONs normalmente...
-    @PostMapping(value = "/ejemplarForm", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Ejemplar> addEjemplarForm(@RequestParam Libro isbn,
-                                              @RequestParam String estado) {
-        Ejemplar ejemplar = new Ejemplar();
-        ejemplar.setIsbn(isbn);
-        ejemplar.setEstado(estado);
-        this.ejemplarRepository.save(ejemplar);
-        return ResponseEntity.created(null).body(ejemplar);
-    }
-
-    //POST con Form normal y fichero, se trabajará con JSONs normalmente...
-    @PostMapping(value = "/ejemplarFormFichero", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Ejemplar> addEjemplarFormFichero(@RequestParam Libro isbn,
-                                                     @RequestParam String estado) {
-        //Datos básicos del ejemplar
-        Ejemplar ejemplar = new Ejemplar();
-        ejemplar.setIsbn(isbn);
-        ejemplar.setEstado(estado);
-
-        //guardado en la bbdd del ejemplar
-        this.ejemplarRepository.save(ejemplar);
-
-        //devolución del objeto en formato json para el cliente
-        return ResponseEntity.created(null).body(ejemplar);
     }
 
     //PUT --> UPDATE
@@ -86,10 +62,10 @@ public class EjemplarController {
     }
 
     //DELETE
-    @DeleteMapping("/{isbn}")
-    public ResponseEntity<String> deleteEjemplar(@PathVariable String isbn) {
-        ejemplarRepository.deleteById(isbn);
-        String mensaje = "ejemplar con isbn: " + isbn + " borrado";
+    @DeleteMapping("/{idEjemplar}")
+    public ResponseEntity<String> deleteEjemplar(@PathVariable int idEjemplar) {
+        ejemplarRepository.deleteById(idEjemplar);
+        String mensaje = "ejemplar con isbn: " + idEjemplar + " borrado";
         return ResponseEntity.ok().body(mensaje);
     }
 }

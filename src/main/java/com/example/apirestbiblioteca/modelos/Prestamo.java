@@ -18,13 +18,13 @@ public class Prestamo {
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "ejemplar_id", nullable = false)
     private Ejemplar ejemplar;
@@ -35,14 +35,6 @@ public class Prestamo {
 
     @Column(name = "fechaDevolucion")
     private LocalDate fechaDevolucion;
-
-    public Prestamo(Integer id, Usuario usuario, Ejemplar ejemplar, LocalDate fechaInicio, LocalDate fechaDevolucion) {
-        this.id = id;
-        this.usuario = usuario;
-        this.ejemplar = ejemplar;
-        this.fechaInicio = fechaInicio;
-        this.fechaDevolucion = fechaDevolucion;
-    }
 
     public Prestamo() {}
 
@@ -84,16 +76,5 @@ public class Prestamo {
 
     public void setFechaDevolucion(LocalDate fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
-    }
-
-    @Override
-    public String toString() {
-        return "Prestamo{" +
-                "id=" + id +
-                ", usuario=" + usuario.getId() +
-                ", ejemplar=" + ejemplar.getId() +
-                ", fechaInicio=" + fechaInicio +
-                ", fechaDevolucion=" + fechaDevolucion +
-                '}';
     }
 }
