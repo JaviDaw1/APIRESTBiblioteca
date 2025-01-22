@@ -1,5 +1,7 @@
-package com.example.apirestbiblioteca;
+package com.example.apirestbiblioteca.controladores;
 
+import com.example.apirestbiblioteca.modelos.Libro;
+import com.example.apirestbiblioteca.repositorios.LibrosRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;

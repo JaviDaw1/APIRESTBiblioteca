@@ -1,4 +1,4 @@
-package com.example.apirestbiblioteca;
+package com.example.apirestbiblioteca.modelos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
