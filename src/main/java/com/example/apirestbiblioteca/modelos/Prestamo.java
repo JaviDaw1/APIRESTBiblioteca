@@ -1,14 +1,17 @@
 package com.example.apirestbiblioteca.modelos;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 @Entity
 @Table(name = "prestamo")
 public class Prestamo {
@@ -18,63 +21,26 @@ public class Prestamo {
     private Integer id;
 
     @NotNull
+    @NotBlank
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @NotNull
+    @NotBlank
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "ejemplar_id", nullable = false)
     private Ejemplar ejemplar;
 
     @NotNull
+    @NotBlank
     @Column(name = "fechaInicio", nullable = false)
     private LocalDate fechaInicio;
 
+    @NotNull
+    @NotBlank
     @Column(name = "fechaDevolucion")
     private LocalDate fechaDevolucion;
-
-    public Prestamo() {}
-
-    public Integer getId() {
-        return id;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public Ejemplar getEjemplar() {
-        return ejemplar;
-    }
-
-    public LocalDate getFechaInicio() {
-        return fechaInicio;
-    }
-
-    public LocalDate getFechaDevolucion() {
-        return fechaDevolucion;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public void setEjemplar(Ejemplar ejemplar) {
-        this.ejemplar = ejemplar;
-    }
-
-    public void setFechaInicio(LocalDate fechaInicio) {
-        this.fechaInicio = fechaInicio;
-    }
-
-    public void setFechaDevolucion(LocalDate fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
-    }
 }

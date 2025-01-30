@@ -5,12 +5,11 @@ import com.example.apirestbiblioteca.repositorios.UsuarioRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -21,7 +20,7 @@ public class UsuarioController {
     }
 
     @Autowired
-    public UsuarioController(UsuarioRepository usuarioRepository){
+    public UsuarioController(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
 
@@ -41,18 +40,27 @@ public class UsuarioController {
         return ResponseEntity.ok(l);
     }
 
-    //POST --> INSERT
     @PostMapping("/usuario")
-    public ResponseEntity<Usuario> addUsuario(@Valid @RequestBody Usuario usuario) {
-        System.out.println("Entra aqui");
-        Usuario usuarioPersistido = this.usuarioRepository.save(usuario);
+    public ResponseEntity<?> addUsuario(@Valid @RequestBody Usuario usuario) {
+        if (!isDniValido(usuario.getDni())) {
+            return ResponseEntity.badRequest().body("DNI no válido. Debe tener 8 números seguidos de una letra mayúscula");
+        }
+
+        Usuario usuarioPersistido = usuarioRepository.save(usuario);
         return ResponseEntity.ok().body(usuarioPersistido);
     }
 
-    //PUT --> UPDATE
-    //falta actualizar ficheros
     @PutMapping("/{idUsuario}")
-    public ResponseEntity<Usuario> updateUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> updateUsuario(@PathVariable Integer idUsuario, @RequestBody Usuario usuario) {
+        if (!isDniValido(usuario.getDni())) {
+            return ResponseEntity.badRequest().body("DNI no válido. Debe tener 8 números seguidos de una letra mayúscula");
+        }
+
+        if (!usuarioRepository.existsById(idUsuario)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        usuario.setId(idUsuario);
         Usuario usuarioPersistido = usuarioRepository.save(usuario);
         return ResponseEntity.ok().body(usuarioPersistido);
     }
@@ -63,6 +71,11 @@ public class UsuarioController {
         usuarioRepository.deleteById(idUsuario);
         String mensaje = "usuario con isbn: " + idUsuario + " borrado";
         return ResponseEntity.ok().body(mensaje);
+    }
+
+    public static boolean isDniValido(String dni) {
+        String dniRegex = "^[0-9]{8}[A-Z]$";
+        return Pattern.compile(dniRegex).matcher(dni).matches();
     }
 }
 

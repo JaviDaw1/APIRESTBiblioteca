@@ -1,16 +1,19 @@
 package com.example.apirestbiblioteca.modelos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "usuario")
 public class Usuario {
@@ -21,87 +24,37 @@ public class Usuario {
 
     @Size(max = 15)
     @NotNull
+    @NotBlank
     @Column(name = "dni", nullable = false, length = 15)
     private String dni;
 
     @Size(max = 100)
     @NotNull
+    @NotBlank
+    @Pattern(regexp = "^[A-Za-z0-9 ]+$", message = "El nombre solo puede contener caracteres alfanuméricos y espacios")
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
     @Size(max = 100)
     @NotNull
+    @NotBlank
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@gmail\\.com$", message = "El email debe ser de dominio Gmail (ejemplo: usuario@gmail.com)")
     @Column(name = "email", nullable = false, length = 100)
     private String email;
 
-    @Size(max = 255)
+    @Size(min = 4, max = 12)
     @NotNull
+    @NotBlank
+    @Pattern(regexp = "^[A-Za-z0-9]+$", message = "La contraseña debe ser alfanumérica y tener entre 4 y 12 caracteres")
     @Column(name = "password", nullable = false)
     private String password;
 
     @NotNull
-    @Lob
-    @Column(name = "tipo", nullable = false)
+    @NotBlank
+    @Pattern(regexp = "^(normal|administrador)$", message = "El tipo solo puede ser 'normal' o 'administrador'")
+    @Column(name = "tipo", nullable = false, length = 20)
     private String tipo;
 
     @Column(name = "penalizacionHasta")
     private LocalDate penalizacionHasta;
-
-    public Usuario() {}
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public LocalDate getPenalizacionHasta() {
-        return penalizacionHasta;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public void setPenalizacionHasta(LocalDate penalizacionHasta) {
-        this.penalizacionHasta = penalizacionHasta;
-    }
 }

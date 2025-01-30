@@ -1,19 +1,19 @@
 package com.example.apirestbiblioteca.modelos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.Pattern;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "ejemplar")
 public class Ejemplar {
     @Id
@@ -22,6 +22,7 @@ public class Ejemplar {
     private Integer id;
 
     @NotNull
+    @NotBlank
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "isbn", nullable = false)
@@ -29,33 +30,9 @@ public class Ejemplar {
     private Libro isbn;
 
     @ColumnDefault("'Disponible'")
-    @Lob
-    @Column(name = "estado")
+    @NotNull
+    @NotBlank
+    @Pattern(regexp = "^(Disponible|Prestado|Dañado)$", message = "El estado solo puede ser Disponible, Prestado o Dañado")
+    @Column(name = "estado", length = 10)
     private String estado;
-
-    public Ejemplar() {}
-
-    public Integer getId() {
-        return id;
-    }
-
-    public Libro getIsbn() {
-        return isbn;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setIsbn(Libro isbn) {
-        this.isbn = isbn;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 }

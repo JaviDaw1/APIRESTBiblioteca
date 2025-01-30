@@ -1,12 +1,9 @@
 package com.example.apirestbiblioteca.controladores;
 
 import com.example.apirestbiblioteca.modelos.Ejemplar;
-import com.example.apirestbiblioteca.modelos.Libro;
 import com.example.apirestbiblioteca.repositorios.EjemplarRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
